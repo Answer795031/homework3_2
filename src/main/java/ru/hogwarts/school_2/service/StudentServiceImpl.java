@@ -20,20 +20,20 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student addStudent(Student student) {
+    public Student addStudent(Student student) { // добавление записи студента
         return studentRepository.save(student);
     }
 
     @Override
     public Student getStudent(Long id) {
-        if (studentRepository.findById(id).isEmpty()) {
+        if (studentRepository.findById(id).isEmpty()) { // получение записи студента
             throw new StudentNotFoundException("Ошибка! Студент не найден!");
         }
         return studentRepository.findById(id).get();
     }
 
     @Override
-    public Student updateStudent(Long id, Student student) {
+    public Student updateStudent(Long id, Student student) { // изменение записи студента
         if (studentRepository.findById(id).isEmpty()) {
             return studentRepository.save(student);
         }
@@ -44,13 +44,15 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student removeStudent(Long id) {
+    public Student removeStudent(Long id) { // удаление записи студента
         studentRepository.deleteById(id);
         return null;
     }
 
     @Override
-    public List<Student> studentsByAge(int age) {
-        return null;
+    public List<Student> studentsByAge(int age) { // получение всех студентов по возрасту
+        return studentRepository.findAll().stream()
+                .filter(student -> student.getAge() == age)
+                .collect(Collectors.toList());
     }
 }
